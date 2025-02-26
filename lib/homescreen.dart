@@ -32,21 +32,28 @@ class _HomescreenState extends State<Homescreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blueGrey.shade50,
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-          title: Center(child: Text("Get Data From API", 
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white
-            ))),
-        ),
-        body: commendsModel.isEmpty
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-              physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: commendsModel.length,
-                itemBuilder: (context, index) {
+        body: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.blueGrey,
+              floating: true,
+              pinned: false,
+              snap: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: const Text(
+                  "Get Data From API",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
                   final apidata = commendsModel[index];
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -114,7 +121,11 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                   );
                 },
+                childCount: commendsModel.length,
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
